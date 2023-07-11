@@ -1,0 +1,75 @@
+#pragma kernel generate_triangle_mesh
+#pragma kernel generate_quad_mesh
+#pragma kernel generate_cube_mesh
+
+struct Vertex
+{
+    float3 position;
+};
+
+RWStructuredBuffer<Vertex> vertices;
+RWStructuredBuffer<int> triangles;
+
+[numthreads(1,1,1)]
+void generate_triangle_mesh(uint3 id : SV_DispatchThreadID)
+{
+    Vertex v1, v2, v3;
+    v1.position = float3(0, 0, 0);
+    v2.position = float3(1, 0, 0);
+    v3.position = float3(0, 1, 0);
+
+    vertices[0] = v1;
+    vertices[1] = v2;
+    vertices[2] = v3;
+
+    triangles[0] = 0; triangles[1] = 1; triangles[2] = 2;
+}
+
+[numthreads(1,1,1)]
+void generate_quad_mesh(uint3 id : SV_DispatchThreadID)
+{
+    Vertex v1, v2, v3, v4;
+    v1.position = float3(0, 0, 0);
+    v2.position = float3(1, 0, 0);
+    v3.position = float3(1, 1, 0);
+    v4.position = float3(0, 1, 0);
+
+    vertices[0] = v1;
+    vertices[1] = v2;
+    vertices[2] = v3;
+    vertices[3] = v4;
+
+    triangles[0] = 0; triangles[1] = 1; triangles[2] = 2; 
+    triangles[3] = 0; triangles[4] = 2; triangles[5] = 3;
+}
+
+[numthreads(1,1,1)]
+void generate_cube_mesh(uint3 id : SV_DispatchThreadID)
+{
+    Vertex v1, v2, v3, v4, v5, v6, v7, v8;
+    v1.position = float3(0, 0, 0);
+    v2.position = float3(1, 0, 0);
+    v3.position = float3(1, 1, 0);
+    v4.position = float3(0, 1, 0);
+    v5.position = float3(0, 0, 1);
+    v6.position = float3(1, 0, 1);
+    v7.position = float3(1, 1, 1);
+    v8.position = float3(0, 1, 1);
+
+    vertices[0] = v1; vertices[1] = v2; vertices[2] = v3; vertices[3] = v4;
+    vertices[4] = v5; vertices[5] = v6; vertices[6] = v7; vertices[7] = v8;
+
+    // Hard-code the indices
+    triangles[0] = 0; triangles[1] = 2; triangles[2] = 1;
+    triangles[3] = 0; triangles[4] = 3; triangles[5] = 2;
+    triangles[6] = 1; triangles[7] = 6; triangles[8] = 5;
+    triangles[9] = 1; triangles[10] = 2; triangles[11] = 6;
+    triangles[12] = 5; triangles[13] = 7; triangles[14] = 4;
+    triangles[15] = 5; triangles[16] = 6; triangles[17] = 7;
+    triangles[18] = 4; triangles[19] = 3; triangles[20] = 0;
+    triangles[21] = 4; triangles[22] = 7; triangles[23] = 3;
+    triangles[24] = 0; triangles[25] = 5; triangles[26] = 4;
+    triangles[27] = 0; triangles[28] = 1; triangles[29] = 5;
+    triangles[30] = 3; triangles[31] = 6; triangles[32] = 2;
+    triangles[33] = 3; triangles[34] = 7; triangles[35] = 6;
+}
